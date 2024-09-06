@@ -1,5 +1,4 @@
-<!-- Diseño de la aplicacion -->
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -48,23 +47,22 @@
     <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 
-    <!-- Script de la aplicacion -->
-
+    <!-- Script de la aplicación -->
     <script type="text/javascript">
         var taskIdCounter = 1; // Contador para IDs de tareas
 
-        // Array de tareas vacío 
+        // Array de tareas vacío (sin las tareas "Aprender React" y "Construir un To-Do List")
         var tasks = [];
 
-        // Funcion para eliminar una tarea por su ID
+        // Función para eliminar una tarea por su ID
         var deleteTask = function (id) {
             tasks = tasks.filter(function (task) {
                 return task.id !== id;
             });
-            renderApp(); // Volver a renderizar
+            renderApp(); // Volver a renderizar la aplicación
         };
 
-        // Definir el componente TaskForm
+        // Definición del componente TaskForm
         var TaskForm = function () {
             var taskState = React.useState('');
             var task = taskState[0];
@@ -72,12 +70,12 @@
 
             var handleSubmit = function (event) {
                 event.preventDefault();
-                if (task.trim() === '') return; // No agregar tareas vacias
+                if (task.trim() === '') return; // No agregar tareas vacías
 
                 var newTask = { id: taskIdCounter++, text: task };
                 tasks.push(newTask);
                 setTask(''); // Limpiar el campo de entrada
-                renderApp(); // Volver a renderizar 
+                renderApp(); // Volver a renderizar la aplicación
             };
 
             return React.createElement('form', { onSubmit: handleSubmit },
@@ -91,7 +89,7 @@
             );
         };
 
-        // Definir el componente TaskList
+        // Definición del componente TaskList
         var TaskList = function () {
             return React.createElement('ul', null,
                 tasks.map(function (task) {
@@ -105,7 +103,7 @@
             );
         };
 
-        // Definir el componente principal App
+        // Definición del componente principal App
         var App = function () {
             return React.createElement('div', null,
                 React.createElement('h1', null, 'To-Do List'),
@@ -114,7 +112,7 @@
             );
         };
 
-        // Funcion para renderizar la aplicación
+        // Función para renderizar la aplicación
         var renderApp = function () {
             ReactDOM.render(
                 React.createElement(App),
