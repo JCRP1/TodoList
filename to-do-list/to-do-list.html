@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: rgb(26, 8, 8);
+            color: rgb(241, 233, 233);
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 5px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        li button {
+            background-color: red;
+            color: rgb(250, 246, 246);
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Incluir React y ReactDOM desde un CDN -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Script de la aplicación -->
+    <script type="text/javascript">
+        var taskIdCounter = 1; // Contador para IDs de tareas
+
+        // Array de tareas vacío (sin las tareas "Aprender React" y "Construir un To-Do List")
+        var tasks = [];
+
+        // Función para eliminar una tarea por su ID
+        var deleteTask = function (id) {
+            tasks = tasks.filter(function (task) {
+                return task.id !== id;
+            });
+            renderApp(); // Volver a renderizar la aplicación
+        };
+
+        // Definición del componente TaskForm
+        var TaskForm = function () {
+            var taskState = React.useState('');
+            var task = taskState[0];
+            var setTask = taskState[1];
+
+            var handleSubmit = function (event) {
+                event.preventDefault();
+                if (task.trim() === '') return; // No agregar tareas vacías
+
+                var newTask = { id: taskIdCounter++, text: task };
+                tasks.push(newTask);
+                setTask(''); // Limpiar el campo de entrada
+                renderApp(); // Volver a renderizar la aplicación
+            };
+
+            return React.createElement('form', { onSubmit: handleSubmit },
+                React.createElement('input', {
+                    type: 'text',
+                    value: task,
+                    onChange: function (e) { setTask(e.target.value); },
+                    placeholder: 'Nueva tarea'
+                }),
+                React.createElement('button', { type: 'submit' }, 'Agregar tarea')
+            );
+        };
+
+        // Definición del componente TaskList
+        var TaskList = function () {
+            return React.createElement('ul', null,
+                tasks.map(function (task) {
+                    return React.createElement('li', { key: task.id },
+                        task.text,
+                        React.createElement('button', {
+                            onClick: function () { deleteTask(task.id); }
+                        }, 'Eliminar')
+                    );
+                })
+            );
+        };
+
+        // Definición del componente principal App
+        var App = function () {
+            return React.createElement('div', null,
+                React.createElement('h1', null, 'To-Do List'),
+                React.createElement(TaskForm),
+                React.createElement(TaskList)
+            );
+        };
+
+        // Función para renderizar la aplicación
+        var renderApp = function () {
+            ReactDOM.render(
+                React.createElement(App),
+                document.getElementById('root')
+            );
+        };
+
+        // Renderizar la aplicación inicialmente
+        renderApp();
+    </script>
+</body>
+</html>
